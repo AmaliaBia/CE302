@@ -220,6 +220,67 @@ dim(Queimadas)
 write.csv(Queimadas, "/home/est/bao24/Downloads/Queimadas.csv")
 
 
-gitcreds::gitcreds_set('ghp_qKRQJ55rfGtPQGrH8BWdFuHlPtgoIn371d0w')
+######exercicio
+#Imprima na tela as 9 primeiras observaÃ§Ãµes.
+head(Queimadas, n=9)
 
+#Imprima as Ãºltimas 3 observaÃ§Ãµes.
+tail(Queimadas, n=3)
 
+#Quantas observaÃ§Ãµes temos?
+nrow(Queimadas)
+
+#Quantas variÃ¡veis temos?
+ncol(Queimadas)
+
+#Apresente o sumÃ¡rio dos dados.
+summary(Queimadas)
+
+#Apresente a estrutura dos dados.
+str(Queimadas)
+
+#Quantos biomas estÃ£o sendo afetados?
+unique(Queimadas$bioma)
+length(unique(Queimadas$bioma))
+Queimadas$bioma=factor(Queimadas$bioma)
+Queimadas$bioma
+nlevels(Queimadas$bioma)
+levels(Queimadas$bioma)
+
+#Qual a mÃ©dia de avg_numero_dias_sem_chuva para os estados da regiÃ£o sul e da regiÃ£o norte?
+sul=toupper(c("Parana","Santa Cataria", "Rio grande do sul"))
+sul=subset(Queimadas, estado%in%sul)
+mean(sul$avg_numero_dias_sem_chuva)
+
+norte=c("acre", "amazonas", "para", "rondonia", "roraima")
+norte=subset(Queimadas, estado%in%norte)
+mean(norte$avg_numero_dias_sem_chuva)
+
+######data table
+
+install.packages("data.table")
+library(data.table)
+# Criar um data.table
+mdt<- data.table(
+  nome = c("Alice", "Bob", "Carol", "Ana", "João", "Carlos", "Patrícia", "Leonardo"),
+  idade = c(25, 30, 28, 20, 27, 50, 60, 45),
+  salario = c(5000, 6000, 5500, 8000, 2000, 3500, 10000, 3800 ), 
+  meio_de_transporte = c('onibus', 'bicicleta', 'onibus', 'carro', 'carro', 'onibus', 'onibus', 'bicicleta'))
+mdt
+
+# Importar um data.table e comparando o tempo de importação com o read.csv
+
+system.time(Queimadas <- fread("/home/est/bao24/Downloads/Queimadas.csv"))
+system.time(Queimadas <- read.csv("/home/est/bao24/Downloads/Queimadas.csv"))
+# Selecionar colunas e filtrar linhas
+resultado <- mdt[idade > 25, .(nome, salario)]
+resultado
+
+# Agregar dados 
+agregado <- mdt[, .(media_salario = mean(salario)),]
+agregado
+
+####tibble
+
+require(tibble)
+install.packages("tibble")
