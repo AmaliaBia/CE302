@@ -284,3 +284,4 @@ agregado
 
 require(tibble)
 install.packages("tibble")
+njlijuinij
