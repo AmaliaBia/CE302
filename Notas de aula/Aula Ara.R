@@ -138,4 +138,3 @@ mtcars %>% ggplot(aes(x=hp, y=mpg,size = am,colour = factor(am)))+ #base crua do
   theme(text = element_text(size=15, color="blue"), #alteracao do texto geral
         plot.title = element_text(hjust = 0.5,size = 15, color = "purple")) #alteracao do titulo
 
-#####tem mais uns dois graficos q eu nao fiz
