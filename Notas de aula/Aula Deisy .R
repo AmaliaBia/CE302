@@ -500,3 +500,64 @@ airports %>%
 flights %>%
   anti_join(airports, join_by(dest == faa)) %>% 
   distinct(dest)
+
+#####################################pivotagem
+library(tidyverse)
+library(magrittr)
+library(tzdb)
+table1
+
+#pivot wider
+table1 %>% 
+  select(country, year, cases) %>% 
+  pivot_wider(names_from = year, values_from = cases, #names= colunas, values=valores
+              values_fill = 0, values_fn = max) #fill= completa os NA com oq eu quero, fn=aplica funcao dentro dos valores
+
+table1 %>% 
+  pivot_longer(cols = c(cases, population), # variaveis que eu quero pivotar, oq eu quero empilhar
+               names_to = "variavel", #nome da coluna 
+               values_to = "tamanho") #nome dos valores
+
+table3
+
+separated = table3 %>% 
+  separate(rate, into = c("cases", "population")) #separa uma coluna em duas
+separated
+
+separated %>% 
+  unite("1", cases, population, sep = " ") #une duas colunas, rate é o nome da nova coluna e sep é como eu quero juntar
+
+#exemplo
+library(data.table)
+TB=fread("/home/est/bao24/Downloads/TB.csv.gz")
+names(TB)
+TB1 <- TB %>% 
+  pivot_longer(
+    cols = -c(1:4), 
+    names_to = "chave", 
+    values_to = "casos", 
+    values_drop_na = TRUE
+  )
+TB1
+
+TB1 %>% count(chave)
+TB1 %<>% filter(chave %like% "^new")
+TB2 <- TB1 %>% 
+  mutate(chave = stringr::str_replace(chave, "newrel", "new_rel"))
+TB2
+TB3 <- TB2 %>% 
+  separate(chave, c("new", "type", "sexage"), 
+           sep = "_")
+TB3
+TB4 <- TB3 %>% 
+  select(-new, -iso2, -iso3)
+TB5 <- TB4 %>% 
+  separate(sexage, c("sexo", "idade"), sep = 1)
+TB5
+
+###########################str
+texto_multilinhas <- "Primeira linha\nSegunda linha\nTerceira linha"
+str_view(texto_multilinhas)
+texto_tabulado <- "Primeira coluna\tSegunda coluna\tTerceira coluna" 
+str_view(texto_tabulado)
+
